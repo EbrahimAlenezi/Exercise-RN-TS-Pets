@@ -1,5 +1,5 @@
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import React from "react";
+import React, { useState } from "react";
+import { Image, Text, View, StyleSheet, TouchableOpacity } from "react-native";
 
 interface PetItemProps {
   pet: {
@@ -13,18 +13,24 @@ interface PetItemProps {
 }
 
 const PetItem = ({ pet }: PetItemProps) => {
+  const [isState, setState] = useState(true);
+
   return (
     <View style={styles.container}>
       <View style={styles.petInfo}>
-        <Image source={{ uri: pet.image }} style={styles.image} />
-
+        <Image
+          source={{ uri: isState ? pet.image : pet.image2 }}
+          style={styles.image}
+        />
         <Text style={styles.name}>{pet.name}</Text>
-
         <Text style={styles.description}>{pet.description}</Text>
       </View>
 
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.petButton}>
+        <TouchableOpacity
+          style={styles.petButton}
+          onPress={() => setState(!isState)}
+        >
           <Text style={styles.buttonText}>Pet</Text>
         </TouchableOpacity>
 
@@ -47,11 +53,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#f9e3be",
     padding: 20,
     margin: 10,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
   },
   image: {
     width: 200,
@@ -65,24 +66,15 @@ const styles = StyleSheet.create({
     gap: 10,
     marginBottom: 20,
   },
-  text: {
-    fontSize: 16,
-    fontWeight: "bold",
-  },
   name: {
     fontSize: 18,
-    textAlign: "center",
-    color: "purple",
     fontWeight: "bold",
+    color: "purple",
   },
   description: {
     fontSize: 16,
-    color: "black",
     fontWeight: "light",
-  },
-  type: {
-    fontSize: 18,
-    fontWeight: "semibold",
+    color: "black",
   },
   buttonContainer: {
     flexDirection: "row",
@@ -95,15 +87,15 @@ const styles = StyleSheet.create({
     width: "50%",
     marginBottom: 10,
   },
-  buttonText: {
-    textAlign: "center",
-    fontWeight: "bold",
-  },
   adoptButton: {
     backgroundColor: "#f43f5e",
     padding: 10,
     borderRadius: 10,
     width: "50%",
     marginBottom: 10,
+  },
+  buttonText: {
+    textAlign: "center",
+    fontWeight: "bold",
   },
 });
