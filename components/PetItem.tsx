@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Image, Text, View, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
 
 interface PetItemProps {
   pet: {
@@ -10,16 +10,17 @@ interface PetItemProps {
     image: string;
     image2: string;
   };
+  onAdopt: (id: number) => void;
 }
 
-const PetItem = ({ pet }: PetItemProps) => {
-  const [isState, setState] = useState(true);
+const PetItem = ({ pet, onAdopt }: PetItemProps) => {
+  const [isOriginal, setIsOriginal] = useState(true);
 
   return (
     <View style={styles.container}>
       <View style={styles.petInfo}>
         <Image
-          source={{ uri: isState ? pet.image : pet.image2 }}
+          source={{ uri: isOriginal ? pet.image : pet.image2 }}
           style={styles.image}
         />
         <Text style={styles.name}>{pet.name}</Text>
@@ -29,12 +30,15 @@ const PetItem = ({ pet }: PetItemProps) => {
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           style={styles.petButton}
-          onPress={() => setState(!isState)}
+          onPress={() => setIsOriginal(!isOriginal)}
         >
           <Text style={styles.buttonText}>Pet</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.adoptButton}>
+        <TouchableOpacity
+          style={styles.adoptButton}
+          onPress={() => onAdopt(pet.id)}
+        >
           <Text style={styles.buttonText}>Adopt</Text>
         </TouchableOpacity>
       </View>
@@ -46,13 +50,11 @@ export default PetItem;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 10,
     backgroundColor: "#f9e3be",
     padding: 20,
-    margin: 10,
+    marginBottom: 20,
+    borderRadius: 10,
+    alignItems: "center",
   },
   image: {
     width: 200,
@@ -60,11 +62,8 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   petInfo: {
-    flexDirection: "column",
     alignItems: "center",
-    justifyContent: "center",
-    gap: 10,
-    marginBottom: 20,
+    marginBottom: 10,
   },
   name: {
     fontSize: 18,
@@ -73,26 +72,24 @@ const styles = StyleSheet.create({
   },
   description: {
     fontSize: 16,
-    fontWeight: "light",
     color: "black",
   },
   buttonContainer: {
     flexDirection: "row",
     gap: 10,
+    marginTop: 10,
   },
   petButton: {
     backgroundColor: "#4ade80",
     padding: 10,
     borderRadius: 10,
-    width: "50%",
-    marginBottom: 10,
+    width: "45%",
   },
   adoptButton: {
     backgroundColor: "#f43f5e",
     padding: 10,
     borderRadius: 10,
-    width: "50%",
-    marginBottom: 10,
+    width: "45%",
   },
   buttonText: {
     textAlign: "center",
